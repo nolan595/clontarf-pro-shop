@@ -1,19 +1,39 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { useIsMobile } from "../../hooks/useIsMobile";
+import { Modal } from "@/components/ui/Modal";
 
 type BookingPanelProps = {
   bookingUrl: string;
 };
 
 export function BookingPanel({ bookingUrl }: BookingPanelProps) {
-  const isMobile = useIsMobile(768);
+  const [open, setOpen] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [showFallback, setShowFallback] = useState(false);
 
-  if (isMobile) {
-    return (
+  function handleOpen() {
+    setLoaded(false);
+    setShowFallback(false);
+    setOpen(true);
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
+
+  useEffect(() => {
+    if (!open) return;
+
+    const t = window.setTimeout(() => setShowFallback(true), 5000);
+    return () => window.clearTimeout(t);
+  }, [open]);
+
+  return (
+    <>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -23,55 +43,78 @@ export function BookingPanel({ bookingUrl }: BookingPanelProps) {
           <Calendar className="w-8 h-8 text-[#c9a962]" />
         </div>
 
-        <h2 className="text-2xl font-bold text-[#2d2d2d] mb-4">Book Your Lesson</h2>
+        <h2 className="text-2xl font-bold text-[#2d2d2d] mb-4">
+          Book Your Lesson
+        </h2>
 
         <p className="text-gray-600 mb-8">
-          For the best booking experience on mobile, please open our booking system in a new
-          window.
+          Choose a time that suits you using our online booking system.
         </p>
 
-        <a href={bookingUrl} target="_blank" rel="noopener noreferrer" className="inline-block">
-          <Button
-            size="lg"
-            className="bg-[#1a4d2e] hover:bg-[#2d6a4f] text-white rounded-full px-8 h-14 text-base group"
-          >
-            Open Booking System
-            <ExternalLink className="w-5 h-5 ml-2" />
-          </Button>
-        </a>
-      </motion.div>
-    );
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-3xl shadow-sm overflow-hidden"
-    >
-      <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-        <h2 className="font-semibold text-[#2d2d2d]">Book Your Lesson</h2>
-
-        <a
-          href={bookingUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm text-[#1a4d2e] hover:text-[#2d6a4f] flex items-center gap-1"
+        <Button
+          size="lg"
+          onClick={handleOpen}
+          className="bg-[#1a4d2e] hover:bg-[#2d6a4f] text-white rounded-full px-8 h-14 text-base"
         >
-          Open in new tab
-          <ExternalLink className="w-3 h-3" />
-        </a>
-      </div>
+          Open Booking System
+        </Button>
+      </motion.div>
 
-      <div className="relative h-[800px]">
-        <iframe
-          src={bookingUrl}
-          className="w-full h-full"
-          style={{ border: "none" }}
-          title="Booking System"
-          allow="payment"
-        />
-      </div>
-    </motion.div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        title="Book Your Lesson"
+        description={
+          <a
+            href={bookingUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-sm text-[#1a4d2e] hover:text-[#2d6a4f]"
+          >
+            Open in new tab
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        }
+        maxWidthClassName="max-w-5xl"
+      >
+        <div className="relative h-[75vh] rounded-xl overflow-hidden bg-white">
+          {!loaded && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-white">
+              <div className="h-10 w-10 rounded-full border-4 border-gray-200 border-t-[#1a4d2e] animate-spin" />
+              <div className="text-center">
+                <p className="font-semibold text-[#2d2d2d]">Loading booking…</p>
+                <p className="text-sm text-gray-500">
+                  Just a sec while we fetch available times.
+                </p>
+
+                {showFallback && (
+                  <p className="mt-3 text-sm text-gray-500">
+                    Taking longer than expected?{" "}
+                    <a
+                      href={bookingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-[#1a4d2e] hover:text-[#2d6a4f] underline underline-offset-4"
+                    >
+                      Open in a new tab
+                    </a>
+                    .
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+
+          <iframe
+            src={bookingUrl}
+            title="Lesson Booking"
+            className="absolute inset-0 w-full h-full"
+            style={{ border: "none" }}
+            allow="payment"
+            onLoad={() => setLoaded(true)}
+          />
+        </div>
+      </Modal>
+    </>
   );
 }
