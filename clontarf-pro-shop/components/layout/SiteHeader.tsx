@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { routes } from "@/lib/routes";
+import Image from "next/image";
+
 
 type NavLink = {
   name: string;
@@ -45,18 +47,26 @@ export function SiteHeader() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link
-            href={routes.home}
-            className="flex items-center gap-3"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <div className="w-10 h-10 rounded-full bg-[#c9a962] flex items-center justify-center">
-              <ShoppingBag className="w-5 h-5 text-[#1a4d2e]" />
-            </div>
-            <span className="text-xl font-semibold text-white tracking-tight">
-              Clontarf Golf Pro Shop
-            </span>
-          </Link>
+<Link
+  href={routes.home}
+  className="flex items-center gap-3"
+  onClick={() => setMobileMenuOpen(false)}
+>
+  <div className="w-10 h-10 rounded-full bg-[#c9a962] flex items-center justify-center overflow-hidden">
+    <Image
+      src="/images/clontarfGLogo 1.png"
+      alt="Clontarf Golf Pro Shop logo"
+      width={24}
+      height={24}
+      className="object-contain"
+      priority
+    />
+  </div>
+
+  <span className="text-xl font-semibold text-white tracking-tight">
+    Clontarf Golf Pro Shop
+  </span>
+</Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-10">

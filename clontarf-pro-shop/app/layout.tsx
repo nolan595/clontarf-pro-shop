@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { ToasterProvider } from "@/components/providers/ToasterProvider";
 
 export const metadata: Metadata = {
   title: "Clontarf Golf Pro Shop",
@@ -17,6 +18,7 @@ export default function RootLayout({
         <SiteHeader />
         <main className="pt-20">{children}</main>
         <SiteFooter />
+        <ToasterProvider/>
       </body>
     </html>
   );
