@@ -1,0 +1,6 @@
+[build]
+  base = "clontarf-pro-shop"
+  command = "npm run build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
