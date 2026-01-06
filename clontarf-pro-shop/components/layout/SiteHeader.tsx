@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { routes } from "@/lib/routes";
 import Image from "next/image";
@@ -26,6 +26,11 @@ export function SiteHeader() {
         href: routes.home,
         match: (p) => p === routes.home,
       },
+      {
+  name: "Products",
+  href: routes.products,
+  match: (p) => p.startsWith(routes.products),
+},
       {
         name: "Vouchers",
         href: routes.vouchers,
@@ -54,7 +59,7 @@ export function SiteHeader() {
 >
   <div className="w-10 h-10 rounded-full bg-[#c9a962] flex items-center justify-center overflow-hidden">
     <Image
-      src="/images/clontarfGLogo 1.png"
+      src="/images/clontarfGolfLogo.png"
       alt="Clontarf Golf Pro Shop logo"
       width={24}
       height={24}
@@ -64,7 +69,7 @@ export function SiteHeader() {
   </div>
 
   <span className="text-xl font-semibold text-white tracking-tight">
-    Clontarf Golf Pro Shop
+    Clontarf Paradise Golf
   </span>
 </Link>
 

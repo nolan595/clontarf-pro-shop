@@ -13,10 +13,10 @@ export function BookingAltContact() {
       <p className="text-gray-500 mb-4">Prefer to book by phone?</p>
 
       <a
-        href="tel:+1234567890"
+        href="tel: 01 8331892"
         className="inline-flex items-center gap-2 text-[#1a4d2e] font-semibold hover:text-[#2d6a4f] transition-colors"
       >
-        Call us at (123) 456-7890
+        Call us at 01 8331892
       </a>
     </motion.div>
   );

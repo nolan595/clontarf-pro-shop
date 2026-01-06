@@ -31,7 +31,7 @@ export function Hero() {
           className="max-w-2xl"
         >
           <span className="inline-block px-4 py-2 bg-[#c9a962]/20 border border-[#c9a962]/30 text-[#c9a962] text-sm font-medium rounded-full mb-6">
-            Welcome to Clontarf Golf Pro Shop
+            Welcome to Clontarf Paradise Golf
           </span>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">

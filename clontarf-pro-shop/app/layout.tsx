@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { ToasterProvider } from "@/components/providers/ToasterProvider";
 
 export const metadata: Metadata = {
-  title: "Clontarf Golf Pro Shop",
+  title: "Clontarf Paradise Golf",
   description: "Premium vouchers, expert lessons, and golf essentials.",
 };
 

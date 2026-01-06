@@ -11,10 +11,10 @@ export function SiteFooter() {
             <div className="w-8 h-8 rounded-full bg-[#c9a962] flex items-center justify-center">
               <ShoppingBag className="w-4 h-4 text-[#1a4d2e]" />
             </div>
-            <span className="text-lg font-semibold text-white">Clontarf Golf Pro Shop</span>
+            <span className="text-lg font-semibold text-white">Clontarf Paradise Golfp</span>
           </div>
 
-          <p className="text-sm">© {year} Clontarf Golf Pro Shop. All rights reserved.</p>
+          <p className="text-sm">© {year} Clontarf Paradise Golf. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -41,13 +41,13 @@ export function Contact() {
 
               <div className="text-left">
                 <p className="text-sm text-gray-500 mb-0.5">Email us</p>
-                <p className="text-lg font-semibold">info@ClontarfGolfClub.com</p>
+                <p className="text-lg font-semibold">pro@clontarfgolfclub.ie</p>
               </div>
             </a>
 
             {/* Phone */}
             <a
-              href="tel:+1234567890"
+              href="tel:01 8331892"
               className="flex items-center gap-3 text-[#1a4d2e] hover:text-[#2d6a4f] transition-colors group"
             >
               <div className="w-12 h-12 rounded-full bg-[#c9a962]/20 flex items-center justify-center group-hover:bg-[#c9a962]/30 transition-colors">
@@ -69,7 +69,7 @@ export function Contact() {
 
               <div className="text-left">
                 <p className="text-sm text-gray-500 mb-0.5">Call us</p>
-                <p className="text-lg font-semibold">+123 456 7890</p>
+                <p className="text-lg font-semibold">01 8331892</p>
               </div>
             </a>
           </div>
