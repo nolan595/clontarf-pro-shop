@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  /* App background + text (used by @theme inline below) */
+  --background: #f8f6f1; /* <- cream site background */
   --foreground: #171717;
+
+  /* Brand palette (optional but handy) */
+  --green-deep: #1a4d2e;
+  --green-light: #2d6a4f;
+  --cream: #f8f6f1;
+  --gold: #c9a962;
+  --charcoal: #2d2d2d;
 }
 
 @theme inline {
