@@ -9,7 +9,7 @@ export function BookingHero() {
     <section className="relative py-24 bg-[#1a4d2e] overflow-hidden">
       <div className="absolute inset-0 opacity-10">
         <Image
-          src="/images/cta-lesson.jpg"
+          src="/images/cta-lesson.jpeg"
           alt=""
           fill
           className="object-cover"
