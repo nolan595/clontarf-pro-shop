@@ -9,7 +9,7 @@ export const features = [
   {
     icon: Calendar,
     title: "Easy Booking",
-    description: "Book lessons with our PGA professionals",
+    description: "Book lessons with our PGA professional",
   },
   {
     icon: Award,
