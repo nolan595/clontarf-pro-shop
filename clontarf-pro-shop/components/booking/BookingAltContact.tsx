@@ -5,18 +5,24 @@ import { motion } from "framer-motion";
 export function BookingAltContact() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="mt-12 text-center"
+      className="mt-10 text-center"
     >
-      <p className="text-gray-500 mb-4">Prefer to book by phone?</p>
+      <p className="text-sm md:text-base text-[var(--text-secondary)] mb-3">
+        Prefer to book by phone?
+      </p>
 
       <a
-        href="tel: 01 8331892"
-        className="inline-flex items-center gap-2 text-[#1a4d2e] font-semibold hover:text-[#2d6a4f] transition-colors"
+        href="tel:018331892"
+        className="
+          inline-flex items-center gap-2 font-semibold
+          text-[var(--accent-green)]
+          hover:brightness-110 transition
+        "
       >
-        Call us at 01 8331892
+        Call us at 01 833 1892
       </a>
     </motion.div>
   );

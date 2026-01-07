@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import * as React from "react";
 import { toast } from "sonner";
 import { VouchersHero } from "./VouchersHero";
 import { VoucherPurchaseCard } from "./VoucherPurchaseCard";
@@ -15,12 +15,12 @@ const EMPTY_BUYER: BuyerInfo = {
 };
 
 export function VouchersPage() {
-  const [voucherAmount, setVoucherAmount] = useState("");
-  const [purchaseOpen, setPurchaseOpen] = useState(false);
-  const [buyerInfo, setBuyerInfo] = useState<BuyerInfo>(EMPTY_BUYER);
+  const [voucherAmount, setVoucherAmount] = React.useState("");
+  const [purchaseOpen, setPurchaseOpen] = React.useState(false);
+  const [buyerInfo, setBuyerInfo] = React.useState<BuyerInfo>(EMPTY_BUYER);
 
   function handleSelectAmount(amount: number) {
-    setVoucherAmount(amount.toString());
+    setVoucherAmount(String(amount));
   }
 
   function handlePurchase() {
@@ -47,11 +47,11 @@ export function VouchersPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[var(--background)]">
       <VouchersHero />
 
-      {/* Important: give padded sections a background so we never get “black gaps” */}
-      <section className="py-16 bg-[#f8f6f1]">
+      {/* Main content */}
+      <section className="py-16">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <VoucherPurchaseCard
             voucherAmount={voucherAmount}
@@ -59,6 +59,11 @@ export function VouchersPage() {
             onSelectSuggested={handleSelectAmount}
             onPurchase={handlePurchase}
           />
+
+          {/* Optional: tiny reassurance footer (matches premium vibe) */}
+          <p className="mt-6 text-center text-sm text-[var(--text-secondary)]">
+            Secure purchase request — we’ll confirm payment details by email.
+          </p>
         </div>
       </section>
 

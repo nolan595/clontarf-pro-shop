@@ -1,29 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  /* App background + text (used by @theme inline below) */
-  --background: #f8f6f1; /* <- cream site background */
+  /* Base theme (light by default) */
+  --background: #f8f6f1; /* cream */
   --foreground: #171717;
 
-  /* Brand palette (optional but handy) */
+  /* Brand palette (keep these, still useful) */
   --green-deep: #1a4d2e;
   --green-light: #2d6a4f;
   --cream: #f8f6f1;
   --gold: #c9a962;
   --charcoal: #2d2d2d;
+
+  /* New system tokens (works for both themes) */
+  --accent-green: #11B981;
+
+  --text-primary: #171717;
+  --text-secondary: #52525b;
+
+  --surface: rgba(0, 0, 0, 0.04);
+  --surface-2: rgba(0, 0, 0, 0.06);
+  --border: rgba(0, 0, 0, 0.10);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    /* Dark theme */
     --background: #0a0a0a;
     --foreground: #ededed;
+
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+
+    --surface: rgba(255, 255, 255, 0.06);
+    --surface-2: rgba(255, 255, 255, 0.08);
+    --border: rgba(255, 255, 255, 0.12);
   }
 }
 

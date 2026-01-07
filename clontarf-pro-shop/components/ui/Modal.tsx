@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import * as React from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import clsx from "clsx";
 
 type ModalProps = {
   open: boolean;
@@ -21,7 +22,7 @@ export function Modal({
   children,
   maxWidthClassName = "max-w-md",
 }: ModalProps) {
-  useEffect(() => {
+  React.useEffect(() => {
     if (!open) return;
 
     function onKeyDown(e: KeyboardEvent) {
@@ -32,7 +33,7 @@ export function Modal({
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open, onClose]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!open) return;
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -49,23 +50,42 @@ export function Modal({
       <button
         type="button"
         aria-label="Close modal"
-        className="absolute inset-0 bg-black/50"
+        className="absolute inset-0 bg-black/70"
         onClick={onClose}
       />
 
       {/* panel */}
       <div className="relative h-full w-full flex items-center justify-center p-4">
-        <div className={`w-full ${maxWidthClassName} rounded-2xl bg-white shadow-xl overflow-hidden`}>
-          <div className="p-5 border-b border-gray-100 flex items-start justify-between gap-4">
+        <div
+          className={clsx(
+            "w-full rounded-2xl overflow-hidden",
+            "border border-[var(--border)] bg-[var(--background)]",
+            "shadow-[0_24px_80px_rgba(0,0,0,0.65)]",
+            maxWidthClassName
+          )}
+        >
+          <div className="p-5 border-b border-[var(--border)] flex items-start justify-between gap-4">
             <div>
-              {title && <h3 className="text-xl font-semibold text-[#2d2d2d]">{title}</h3>}
-              {description && <div className="mt-1 text-sm text-gray-500">{description}</div>}
+              {title && (
+                <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+                  {title}
+                </h3>
+              )}
+              {description && (
+                <div className="mt-1 text-sm text-[var(--text-secondary)]">
+                  {description}
+                </div>
+              )}
             </div>
 
             <button
               type="button"
               onClick={onClose}
-              className="p-2 rounded-xl hover:bg-gray-50 text-gray-600"
+              className={clsx(
+                "p-2 rounded-xl transition",
+                "text-[var(--text-secondary)] hover:text-[var(--text-primary)]",
+                "hover:bg-[var(--surface)]"
+              )}
               aria-label="Close"
             >
               <X className="w-5 h-5" />

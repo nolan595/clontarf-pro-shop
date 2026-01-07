@@ -4,27 +4,33 @@ import { motion } from "framer-motion";
 
 export function Contact() {
   return (
-    <section className="py-16 border-t border-gray-200 bg-white">
+    <section className="py-16 border-t border-[var(--border)] bg-[var(--background)]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-[#2d2d2d] mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-6">
             Get in Touch
           </h2>
 
           <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
             {/* Email */}
             <a
-              href="mailto:info@theproshop.com"
-              className="flex items-center gap-3 text-[#1a4d2e] hover:text-[#2d6a4f] transition-colors group"
+              href="mailto:pro@clontarfgolfclub.ie"
+              className="flex items-center gap-3 group"
             >
-              <div className="w-12 h-12 rounded-full bg-[#c9a962]/20 flex items-center justify-center group-hover:bg-[#c9a962]/30 transition-colors">
+              <div
+                className="
+                  w-12 h-12 rounded-full flex items-center justify-center transition-colors
+                  bg-[var(--surface)] border border-[var(--border)]
+                  group-hover:bg-[var(--surface-2)]
+                "
+              >
                 <svg
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-[var(--accent-green)]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -40,19 +46,26 @@ export function Contact() {
               </div>
 
               <div className="text-left">
-                <p className="text-sm text-gray-500 mb-0.5">Email us</p>
-                <p className="text-lg font-semibold">pro@clontarfgolfclub.ie</p>
+                <p className="text-sm text-[var(--text-secondary)] mb-0.5">
+                  Email us
+                </p>
+                <p className="text-lg font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-green)] transition-colors">
+                  pro@clontarfgolfclub.ie
+                </p>
               </div>
             </a>
 
             {/* Phone */}
-            <a
-              href="tel:01 8331892"
-              className="flex items-center gap-3 text-[#1a4d2e] hover:text-[#2d6a4f] transition-colors group"
-            >
-              <div className="w-12 h-12 rounded-full bg-[#c9a962]/20 flex items-center justify-center group-hover:bg-[#c9a962]/30 transition-colors">
+            <a href="tel:018331892" className="flex items-center gap-3 group">
+              <div
+                className="
+                  w-12 h-12 rounded-full flex items-center justify-center transition-colors
+                  bg-[var(--surface)] border border-[var(--border)]
+                  group-hover:bg-[var(--surface-2)]
+                "
+              >
                 <svg
-                  className="w-5 h-5"
+                  className="w-5 h-5 text-[var(--accent-green)]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -68,8 +81,12 @@ export function Contact() {
               </div>
 
               <div className="text-left">
-                <p className="text-sm text-gray-500 mb-0.5">Call us</p>
-                <p className="text-lg font-semibold">01 8331892</p>
+                <p className="text-sm text-[var(--text-secondary)] mb-0.5">
+                  Call us
+                </p>
+                <p className="text-lg font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-green)] transition-colors">
+                  01 8331892
+                </p>
               </div>
             </a>
           </div>

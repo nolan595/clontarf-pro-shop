@@ -1,4 +1,3 @@
-// components/ui/Select.tsx
 import * as React from "react";
 
 type Option = {
@@ -12,6 +11,7 @@ type SelectProps = {
   options: Option[];
   placeholder?: string;
   className?: string;
+  widthClassName?: string; // optional convenience
 };
 
 export default function Select({
@@ -20,26 +20,36 @@ export default function Select({
   options,
   placeholder,
   className = "",
+  widthClassName = "w-48",
 }: SelectProps) {
   return (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className={`w-48 rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900
-        focus:outline-none focus:ring-2 focus:ring-[#1a4d2e]/30
-        ${className}`}
-    >
-      {placeholder && (
-        <option value="" disabled>
-          {placeholder}
-        </option>
-      )}
+    <div className={`relative ${widthClassName} ${className}`}>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="
+          w-full appearance-none rounded-xl px-4 py-2 text-sm
+          border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)]
+          outline-none transition
+          focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-green)_35%,transparent)]
+        "
+      >
+        {placeholder && (
+          <option value="" disabled className="bg-[var(--background)]">
+            {placeholder}
+          </option>
+        )}
 
-      {options.map((opt) => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value} className="bg-[var(--background)]">
+            {opt.label}
+          </option>
+        ))}
+      </select>
+
+      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-white/50">
+        ▾
+      </span>
+    </div>
   );
 }

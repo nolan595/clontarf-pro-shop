@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
@@ -36,7 +37,9 @@ export function VoucherPurchaseModal({
       onClose={onClose}
       title="Complete Your Purchase"
       description={
-        <span className="text-[#1a4d2e] font-semibold text-lg">€{amount} Voucher</span>
+        <span className="text-[var(--accent-green)] font-semibold text-lg">
+          €{amount} Voucher
+        </span>
       }
       maxWidthClassName="max-w-md"
     >
@@ -46,7 +49,9 @@ export function VoucherPurchaseModal({
           <Input
             id="name"
             value={buyerInfo.name}
-            onChange={(e) => onChangeBuyerInfo({ ...buyerInfo, name: e.target.value })}
+            onChange={(e) =>
+              onChangeBuyerInfo({ ...buyerInfo, name: e.target.value })
+            }
             required
           />
         </div>
@@ -57,7 +62,9 @@ export function VoucherPurchaseModal({
             id="email"
             type="email"
             value={buyerInfo.email}
-            onChange={(e) => onChangeBuyerInfo({ ...buyerInfo, email: e.target.value })}
+            onChange={(e) =>
+              onChangeBuyerInfo({ ...buyerInfo, email: e.target.value })
+            }
             required
           />
         </div>
@@ -81,7 +88,10 @@ export function VoucherPurchaseModal({
             type="email"
             value={buyerInfo.recipientEmail}
             onChange={(e) =>
-              onChangeBuyerInfo({ ...buyerInfo, recipientEmail: e.target.value })
+              onChangeBuyerInfo({
+                ...buyerInfo,
+                recipientEmail: e.target.value,
+              })
             }
             placeholder="recipient@email.com"
           />
@@ -92,19 +102,18 @@ export function VoucherPurchaseModal({
           <Input
             id="message"
             value={buyerInfo.message}
-            onChange={(e) => onChangeBuyerInfo({ ...buyerInfo, message: e.target.value })}
+            onChange={(e) =>
+              onChangeBuyerInfo({ ...buyerInfo, message: e.target.value })
+            }
             placeholder="Happy Birthday!"
           />
         </div>
 
-        <Button
-          type="submit"
-          className="w-full bg-[#1a4d2e] hover:bg-[#2d6a4f] text-white rounded-full h-12 font-semibold"
-        >
+        <Button type="submit" className="w-full rounded-full h-12 font-semibold">
           Submit Purchase Request
         </Button>
 
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-[var(--text-secondary)] text-center">
           We&apos;ll contact you to complete payment and deliver your voucher
         </p>
       </form>

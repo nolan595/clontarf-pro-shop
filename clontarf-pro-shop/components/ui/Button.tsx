@@ -3,7 +3,7 @@
 import * as React from "react";
 import clsx from "clsx";
 
-type ButtonVariant = "default" | "outline";
+type ButtonVariant = "default" | "outline" | "ghost";
 type ButtonSize = "default" | "lg";
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -13,16 +13,23 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const base =
-  "inline-flex items-center justify-center gap-2 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
+  "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-colors " +
+  "focus:outline-none focus:ring-2 focus:ring-[color-mix(in_srgb,var(--accent-green)_35%,transparent)] " +
+  "focus:ring-offset-2 focus:ring-offset-[var(--background)] " +
+  "disabled:opacity-50 disabled:pointer-events-none";
 
 const variants: Record<ButtonVariant, string> = {
-  default: "",
-  outline: "border bg-transparent",
+  default:
+    "bg-[var(--accent-green)] text-black hover:brightness-110 active:brightness-95",
+  outline:
+    "border border-[var(--border)] bg-transparent text-[var(--text-primary)] hover:bg-[var(--surface)]",
+  ghost:
+    "bg-transparent text-[var(--text-primary)] hover:bg-[var(--surface)]",
 };
 
 const sizes: Record<ButtonSize, string> = {
   default: "h-10 px-4 text-sm",
-  lg: "h-14 px-8 text-base",
+  lg: "h-12 px-6 text-base",
 };
 
 export function Button({
