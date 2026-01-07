@@ -29,3 +29,16 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model VoucherPurchase {
+  id              String  @id @default(cuid())
+  amount          Decimal
+  buyer_name      String
+  buyer_email     String
+  recipient_name  String?
+  recipient_email String?
+  message         String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
