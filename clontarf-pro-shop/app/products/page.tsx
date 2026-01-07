@@ -1,8 +1,8 @@
-// app/products/page.tsx
 import { prisma } from "@/lib/prisma";
 import ProductsClient from "./ProductsClient";
 
-export const runtime = "nodejs"; // Prisma requires Node runtime
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
@@ -20,7 +20,6 @@ export default async function ProductsPage() {
     },
   });
 
-  // Convert Decimal -> number for the client component
   const safeProducts = products.map((p) => ({
     ...p,
     price: p.price.toNumber(),
