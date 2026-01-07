@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 type DbProduct = Awaited<ReturnType<typeof prisma.product.findMany>>[number];
@@ -9,13 +9,14 @@ function toDTO(p: DbProduct): ProductDTO {
 }
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const body = await req.json();
 
   const updated = await prisma.product.update({
-    where: { id: params.id },
+    where: { id },
     data: {
       // Only update fields present
       ...(typeof body.name === "string" ? { name: body.name } : {}),
@@ -33,9 +34,10 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  await prisma.product.delete({ where: { id: params.id } });
+  const { id } = await params;
+  await prisma.product.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }
