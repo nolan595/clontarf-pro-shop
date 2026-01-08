@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 
@@ -15,6 +15,7 @@ export function BookingPanel({ bookingUrl }: BookingPanelProps) {
   const [loaded, setLoaded] = useState(false);
   const [showFallback, setShowFallback] = useState(false);
 
+  // Reset states when opening (avoid doing this in useEffect to prevent the React warning)
   function handleOpen() {
     setLoaded(false);
     setShowFallback(false);
@@ -35,28 +36,30 @@ export function BookingPanel({ bookingUrl }: BookingPanelProps) {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-3xl shadow-sm p-8 text-center"
+        className="
+          rounded-[28px] px-8 py-10 md:px-12 md:py-12 text-center
+          border border-[var(--border)] bg-[var(--surface)]
+          shadow-[0_20px_80px_rgba(0,0,0,0.45)]
+        "
       >
-        <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-[#c9a962]/20 flex items-center justify-center">
-          <Calendar className="w-8 h-8 text-[#c9a962]" />
-        </div>
-
-        <h2 className="text-2xl font-bold text-[#2d2d2d] mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)] mb-4">
           Book Your Lesson
         </h2>
 
-        <p className="text-gray-600 mb-8">
-          Choose a time that suits you using our online booking system.
+        <p className="text-[var(--text-secondary)] mb-8">
+          For the best booking experience on mobile, please open our booking system in a new
+          window.
         </p>
 
         <Button
           size="lg"
           onClick={handleOpen}
-          className="bg-[#1a4d2e] hover:bg-[#2d6a4f] text-white rounded-full px-8 h-14 text-base"
+          className="rounded-full px-8 h-12 text-base inline-flex items-center gap-2"
         >
           Open Booking System
+          <ExternalLink className="w-4 h-4" />
         </Button>
       </motion.div>
 
@@ -69,7 +72,10 @@ export function BookingPanel({ bookingUrl }: BookingPanelProps) {
             href={bookingUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-sm text-[#1a4d2e] hover:text-[#2d6a4f]"
+            className="
+              inline-flex items-center gap-1 text-sm
+              text-[var(--accent-green)] hover:brightness-110 transition
+            "
           >
             Open in new tab
             <ExternalLink className="w-3 h-3" />
@@ -77,24 +83,32 @@ export function BookingPanel({ bookingUrl }: BookingPanelProps) {
         }
         maxWidthClassName="max-w-5xl"
       >
-        <div className="relative h-[75vh] rounded-xl overflow-hidden bg-white">
+        <div
+          className="
+            relative h-[75vh] rounded-2xl overflow-hidden
+            border border-[var(--border)] bg-[var(--surface)]
+          "
+        >
           {!loaded && (
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-white">
-              <div className="h-10 w-10 rounded-full border-4 border-gray-200 border-t-[#1a4d2e] animate-spin" />
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[var(--background)]">
+              <div className="h-10 w-10 rounded-full border-4 border-white/15 border-t-[var(--accent-green)] animate-spin" />
+
               <div className="text-center">
-                <p className="font-semibold text-[#2d2d2d]">Loading booking…</p>
-                <p className="text-sm text-gray-500">
+                <p className="font-semibold text-[var(--text-primary)]">
+                  Loading booking…
+                </p>
+                <p className="text-sm text-[var(--text-secondary)]">
                   Just a sec while we fetch available times.
                 </p>
 
                 {showFallback && (
-                  <p className="mt-3 text-sm text-gray-500">
+                  <p className="mt-3 text-sm text-[var(--text-secondary)]">
                     Taking longer than expected?{" "}
                     <a
                       href={bookingUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-semibold text-[#1a4d2e] hover:text-[#2d6a4f] underline underline-offset-4"
+                      className="font-semibold text-[var(--accent-green)] hover:brightness-110 underline underline-offset-4"
                     >
                       Open in a new tab
                     </a>

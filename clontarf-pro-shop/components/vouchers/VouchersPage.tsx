@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import * as React from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { VouchersHero } from "./VouchersHero";
 import { VoucherPurchaseCard } from "./VoucherPurchaseCard";
 import { VoucherPurchaseModal, type BuyerInfo } from "./VoucherPurchaseModal";
@@ -14,13 +15,50 @@ const EMPTY_BUYER: BuyerInfo = {
   message: "",
 };
 
+type CreateVoucherPurchaseResponse = {
+  id: string;
+};
+
+async function postJSON<TResponse>(url: string, body: unknown): Promise<TResponse> {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return res.json() as Promise<TResponse>;
+}
+
 export function VouchersPage() {
-  const [voucherAmount, setVoucherAmount] = useState("");
-  const [purchaseOpen, setPurchaseOpen] = useState(false);
-  const [buyerInfo, setBuyerInfo] = useState<BuyerInfo>(EMPTY_BUYER);
+  const router = useRouter();
+
+  const [voucherAmount, setVoucherAmount] = React.useState("");
+  const [purchaseOpen, setPurchaseOpen] = React.useState(false);
+
+  const [buyerInfo, setBuyerInfo] = React.useState<BuyerInfo>(EMPTY_BUYER);
+
+  // NEW: modal steps + created purchase id
+  const [step, setStep] = React.useState<"details" | "payment">("details");
+  const [voucherPurchaseId, setVoucherPurchaseId] = React.useState<string | null>(null);
+
+  // Optional: block double submits
+  const [submitting, setSubmitting] = React.useState(false);
+
+  function resetFlow() {
+    setPurchaseOpen(false);
+    setStep("details");
+    setVoucherPurchaseId(null);
+    setBuyerInfo(EMPTY_BUYER);
+    setVoucherAmount("");
+    setSubmitting(false);
+  }
 
   function handleSelectAmount(amount: number) {
-    setVoucherAmount(amount.toString());
+    setVoucherAmount(String(amount));
   }
 
   function handlePurchase() {
@@ -31,27 +69,71 @@ export function VouchersPage() {
       return;
     }
 
+    // start fresh each time
+    setStep("details");
+    setVoucherPurchaseId(null);
+
     setPurchaseOpen(true);
   }
 
-  function handleSubmitPurchase(e: React.FormEvent) {
+  async function handleSubmitPurchase(e: React.FormEvent) {
     e.preventDefault();
 
-    toast.success(
-      `Thank you! Your €${voucherAmount} voucher purchase request has been received. We will contact you shortly.`
-    );
+    if (submitting) return;
 
-    setPurchaseOpen(false);
-    setBuyerInfo(EMPTY_BUYER);
-    setVoucherAmount("");
+    const amountNum = Number(voucherAmount);
+
+    if (!voucherAmount || !Number.isFinite(amountNum) || amountNum <= 0) {
+      toast.error("Please enter a valid amount");
+      return;
+    }
+
+    if (!buyerInfo.name.trim() || !buyerInfo.email.trim()) {
+      toast.error("Please enter your name and email");
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      // 1) Create voucher purchase (local order)
+      const created = await postJSON<CreateVoucherPurchaseResponse>(
+        "/api/voucher-purchases",
+        {
+          amount: amountNum,
+          buyer_name: buyerInfo.name.trim(),
+          buyer_email: buyerInfo.email.trim(),
+          recipient_name: buyerInfo.recipientName.trim() || null,
+          recipient_email: buyerInfo.recipientEmail.trim() || null,
+          message: buyerInfo.message || null,
+        }
+      );
+
+      // 2) Move to payment step
+      setVoucherPurchaseId(created.id);
+      setStep("payment");
+    } catch (err) {
+      console.error(err);
+      toast.error("Could not start checkout. Please try again.");
+      setSubmitting(false);
+    }
+  }
+
+  function handlePaid() {
+    toast.success("Payment received — your voucher is on the way ✅");
+    resetFlow();
+
+    // Optional: route somewhere nice / show success banner
+    // router.push("/?message=order_success");
+    router.refresh();
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[var(--background)]">
       <VouchersHero />
 
-      {/* Important: give padded sections a background so we never get “black gaps” */}
-      <section className="py-16 bg-[#f8f6f1]">
+      {/* Main content */}
+      <section className="py-16">
         <div className="max-w-3xl mx-auto px-6 lg:px-8">
           <VoucherPurchaseCard
             voucherAmount={voucherAmount}
@@ -59,6 +141,10 @@ export function VouchersPage() {
             onSelectSuggested={handleSelectAmount}
             onPurchase={handlePurchase}
           />
+
+          <p className="mt-6 text-center text-sm text-[var(--text-secondary)]">
+            Secure checkout — pay instantly by card and receive your voucher by email.
+          </p>
         </div>
       </section>
 
@@ -66,9 +152,16 @@ export function VouchersPage() {
         open={purchaseOpen}
         amount={voucherAmount}
         buyerInfo={buyerInfo}
-        onClose={() => setPurchaseOpen(false)}
+        step={step}
+        voucherPurchaseId={voucherPurchaseId}
+        onClose={() => {
+          // allow close only on details step; modal enforces too, but this is safe
+          if (step === "payment") return;
+          setPurchaseOpen(false);
+        }}
         onChangeBuyerInfo={setBuyerInfo}
         onSubmit={handleSubmitPurchase}
+        onPaid={handlePaid}
       />
     </div>
   );
