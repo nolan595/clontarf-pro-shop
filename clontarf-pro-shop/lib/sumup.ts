@@ -47,6 +47,40 @@ export async function createCheckout(payload: {
   }>;
 }
 
+export async function getCheckoutByReference(reference: string) {
+  const res = await sumupFetch(
+    `/v0.1/checkouts?checkout_reference=${encodeURIComponent(reference)}`,
+    { method: "GET" }
+  );
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`SumUp getCheckoutByReference failed: ${res.status} ${text}`);
+  }
+
+  const data = (await res.json()) as unknown;
+  let checkout: any | null = null;
+
+  if (Array.isArray(data)) {
+    checkout = data[0] ?? null;
+  } else if (data && typeof data === "object") {
+    const obj = data as any;
+    if (Array.isArray(obj.items)) checkout = obj.items[0] ?? null;
+    else if (Array.isArray(obj.checkouts)) checkout = obj.checkouts[0] ?? null;
+    else if (Array.isArray(obj.data)) checkout = obj.data[0] ?? null;
+    else if (obj.id) checkout = obj;
+  }
+
+  if (!checkout) return null;
+
+  return {
+    id: checkout.id as string,
+    checkout_reference: checkout.checkout_reference as string,
+    hosted_checkout_url: checkout.hosted_checkout_url as string | undefined,
+    status: checkout.status as string | undefined,
+  };
+}
+
 export async function getCheckout(checkoutId: string) {
   const res = await sumupFetch(`/v0.1/checkouts/${checkoutId}`, { method: "GET" });
 

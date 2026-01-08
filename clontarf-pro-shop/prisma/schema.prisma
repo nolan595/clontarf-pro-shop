@@ -41,6 +41,7 @@ model VoucherPurchase {
   currency        String  @default("EUR")
 
   sumupCheckoutId String?   @unique
+  sumupReference  String?   @unique
   paidAt          DateTime?
   emailedAt       DateTime?
 
