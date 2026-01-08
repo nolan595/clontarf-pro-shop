@@ -1,7 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { getCheckout } from "@/lib/sumup";
 
-export async function GET(_: Request, { params }: { params: { id: string } }) {
-  const checkout = await getCheckout(params.id);
+export async function GET(
+  _req: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
+  const checkout = await getCheckout(id);
   return NextResponse.json(checkout);
 }
