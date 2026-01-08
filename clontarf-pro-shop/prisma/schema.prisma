@@ -32,13 +32,26 @@ model Product {
 
 model VoucherPurchase {
   id              String  @id @default(cuid())
-  amount          Decimal
+  amount          Float
   buyer_name      String
   buyer_email     String
   recipient_name  String?
   recipient_email String?
   message         String?
+  currency        String  @default("EUR")
+
+  sumupCheckoutId String?   @unique
+  paidAt          DateTime?
+  emailedAt       DateTime?
+
+  status VoucherPurchaseStatus @default(PENDING)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum VoucherPurchaseStatus {
+  PENDING
+  PAID
+  FAILED
 }
