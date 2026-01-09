@@ -41,14 +41,14 @@ export function Hero() {
           className="max-w-3xl"
         >
           <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
-            Sharpen your swing.
+            Better Golf
             <br />
-            Enjoy the game.
+            Starts Here.
           </h1>
 
           <p className="mt-6 max-w-xl text-base md:text-lg text-white/65 leading-relaxed">
-            1:1 coaching and bespoke programs for golfers of every level across Dublin.
-            Video analysis, practice plans, and on-course sessions.
+            A modern pro shop offering top-tier brands, trusted expertise and a welcoming space for members and visitors
+            1:1 coaching available for those looking to sharpen their swing.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
