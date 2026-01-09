@@ -154,11 +154,7 @@ export function VouchersPage() {
         buyerInfo={buyerInfo}
         step={step}
         voucherPurchaseId={voucherPurchaseId}
-        onClose={() => {
-          // allow close only on details step; modal enforces too, but this is safe
-          if (step === "payment") return;
-          setPurchaseOpen(false);
-        }}
+        onClose={resetFlow}
         onChangeBuyerInfo={setBuyerInfo}
         onSubmit={handleSubmitPurchase}
         onPaid={handlePaid}
