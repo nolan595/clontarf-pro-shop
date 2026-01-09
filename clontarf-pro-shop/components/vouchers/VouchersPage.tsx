@@ -120,7 +120,7 @@ export function VouchersPage() {
   }
 
   function handlePaid() {
-    toast.success("Payment received — your voucher is on the way ✅");
+    toast.success("Payment received — your voucher is on the way");
     resetFlow();
 
     // Optional: route somewhere nice / show success banner
