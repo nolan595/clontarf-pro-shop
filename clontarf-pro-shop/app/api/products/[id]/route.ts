@@ -5,7 +5,7 @@ type DbProduct = Awaited<ReturnType<typeof prisma.product.findMany>>[number];
 type ProductDTO = Omit<DbProduct, "price"> & { price: number };
 
 function toDTO(p: DbProduct): ProductDTO {
-  return { ...p, price: p.price.toNumber() };
+  return { ...p, price: p.price };
 }
 
 export async function PATCH(

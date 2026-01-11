@@ -8,7 +8,7 @@ type DbProduct = Awaited<ReturnType<typeof prisma.product.findMany>>[number];
 type ProductDTO = Omit<DbProduct, "price"> & { price: number };
 
 function toDTO(p: DbProduct): ProductDTO {
-  return { ...p, price: p.price.toNumber() };
+  return { ...p, price: p.price };
 }
 
 export async function GET() {
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       data: {
         name: body.name,
         description: body.description ?? null,
-        price: new Prisma.Decimal(body.price),
+        price: body.price,
         image_url: body.image_url ?? null,
         category: body.category ?? null,
         brand: body.brand ?? null,
