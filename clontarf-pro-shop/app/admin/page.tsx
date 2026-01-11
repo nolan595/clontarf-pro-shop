@@ -37,7 +37,7 @@ export default async function AdminPage() {
 
   const safeProducts = products.map((p) => ({
     ...p,
-    price: p.price.toNumber(),
+    price: p.price
   }));
 
   // amount might be Int or Decimal depending on your schema

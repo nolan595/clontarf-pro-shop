@@ -337,12 +337,15 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
       {/* Modal (no extra UI lib) */}
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="w-full max-w-2xl bg-white rounded-2xl border border-black/10 shadow-2xl">
-            <div className="p-5 border-b flex items-center justify-between">
-              <h3 className="font-semibold text-lg">
+          <div className="w-full max-w-2xl bg-white rounded-2xl border border-black/20 shadow-2xl">
+            <div className="p-5 border-b border-black/10 flex items-center justify-between">
+              <h3 className="font-semibold text-lg text-gray-900">
                 {editing ? "Edit Product" : "Add Product"}
               </h3>
-              <button onClick={closeModal} className="p-2 rounded-lg hover:bg-gray-100">
+              <button
+                onClick={closeModal}
+                className="p-2 rounded-lg hover:bg-gray-100 text-gray-700"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -350,56 +353,56 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium">Product Name *</label>
+                  <label className="text-sm font-medium text-gray-800">Product Name *</label>
                   <input
                     value={draft.name}
                     onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                     required
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium">Price (€) *</label>
+                  <label className="text-sm font-medium text-gray-800">Price (€) *</label>
                   <input
                     type="number"
                     step="0.01"
                     value={draft.price}
                     onChange={(e) => setDraft((d) => ({ ...d, price: e.target.value }))}
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium text-gray-800">Description</label>
                 <textarea
                   value={draft.description}
                   onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                   rows={3}
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium">Brand</label>
+                  <label className="text-sm font-medium text-gray-800">Brand</label>
                   <input
                     value={draft.brand}
                     onChange={(e) => setDraft((d) => ({ ...d, brand: e.target.value }))}
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium">Category</label>
+                  <label className="text-sm font-medium text-gray-800">Category</label>
                   <select
                     value={draft.category}
                     onChange={(e) =>
                       setDraft((d) => ({ ...d, category: e.target.value as ProductCategory }))
                     }
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border border-gray-300 text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                   >
                     <option value="clubs">Clubs</option>
                     <option value="balls">Balls</option>
@@ -412,20 +415,20 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium">Image URL</label>
+                <label className="text-sm font-medium text-gray-800">Image URL</label>
                 <input
                   value={draft.image_url}
                   onChange={(e) => setDraft((d) => ({ ...d, image_url: e.target.value }))}
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                   placeholder="https://..."
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
-                <label className="flex items-center justify-between border rounded-xl p-4">
+                <label className="flex items-center justify-between border border-gray-300 rounded-xl p-4">
                   <div>
-                    <p className="text-sm font-medium">Featured Product</p>
-                    <p className="text-xs text-gray-500">Show on homepage</p>
+                    <p className="text-sm font-medium text-gray-800">Featured Product</p>
+                    <p className="text-xs text-gray-600">Show on homepage</p>
                   </div>
                   <input
                     type="checkbox"
@@ -435,10 +438,10 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
                   />
                 </label>
 
-                <label className="flex items-center justify-between border rounded-xl p-4">
+                <label className="flex items-center justify-between border border-gray-300 rounded-xl p-4">
                   <div>
-                    <p className="text-sm font-medium">In Stock</p>
-                    <p className="text-xs text-gray-500">Available for sale</p>
+                    <p className="text-sm font-medium text-gray-800">In Stock</p>
+                    <p className="text-xs text-gray-600">Available for sale</p>
                   </div>
                   <input
                     type="checkbox"

@@ -15,7 +15,7 @@ async function main() {
         description: "Premium tour golf balls with exceptional distance and control.",
         price: 59.99,
         image_url:
-          "https://images.unsplash.com/photo-1595433562696-19b0f7a490d8?auto=format&fit=crop&w=800&q=80",
+          "https://source.unsplash.com/800x800/?golf",
         category: ProductCategory.balls,
         brand: "Titleist",
         is_featured: true,
@@ -26,7 +26,7 @@ async function main() {
         description: "High forgiveness driver with explosive ball speed.",
         price: 549.0,
         image_url:
-          "https://images.unsplash.com/photo-1621340288483-3b7a1b6d4e2c?auto=format&fit=crop&w=800&q=80",
+          "https://source.unsplash.com/800x800/?golf",
         category: ProductCategory.clubs,
         brand: "TaylorMade",
         is_featured: true,
@@ -37,7 +37,7 @@ async function main() {
         description: "Soft premium leather glove for superior feel.",
         price: 29.99,
         image_url:
-          "https://images.unsplash.com/photo-1530053969600-caed2596d242?auto=format&fit=crop&w=800&q=80",
+          "https://source.unsplash.com/800x800/?golf",
         category: ProductCategory.accessories,
         brand: "FootJoy",
         is_featured: false,

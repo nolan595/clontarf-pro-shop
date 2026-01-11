@@ -19,7 +19,7 @@ model Product {
   id          String           @id @default(cuid())
   name        String
   description String?
-  price       Decimal
+  price       Float
   image_url   String?
   category    ProductCategory?
   brand       String?

@@ -3,7 +3,7 @@ import ProductsClient from "./ProductsClient";
 import { unstable_cache } from "next/cache";
 
 export const runtime = "nodejs";
-export const revalidate = 60; // cache the page/data for 60s
+export const revalidate = 60;
 
 const getProducts = unstable_cache(
   async () => {
@@ -31,7 +31,7 @@ export default async function ProductsPage() {
 
   const safeProducts = products.map((p) => ({
     ...p,
-    price: p.price.toNumber(),
+    price: p.price
   }));
 
   return <ProductsClient products={safeProducts} />;

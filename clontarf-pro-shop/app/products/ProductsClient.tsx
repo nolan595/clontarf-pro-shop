@@ -121,15 +121,16 @@ export default function ProductsClient({ products }: { products: Product[] }) {
                     transition-shadow duration-500
                   "
                 >
-                  {/* Image */}
                   <div className="relative h-64 overflow-hidden bg-[var(--surface-2)]">
                     {product.image_url ? (
-                      <img
-                        src={product.image_url}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
+    <Image
+      src={product.image_url}
+      alt={product.name}
+      fill
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      className="object-cover"
+      // optional: keep lazy as default (Next does this automatically for non-priority images)
+    />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-black to-[var(--surface-2)] flex items-center justify-center">
                         <ShoppingBag className="w-16 h-16 text-[var(--accent-green)]/40" />
@@ -171,7 +172,7 @@ export default function ProductsClient({ products }: { products: Product[] }) {
 
                     <div className="flex items-center justify-between">
                       <p className="text-2xl font-bold text-[var(--accent-green)]">
-                        €{product.price.toFixed(2)}
+                        €{product.price}
                       </p>
 
                       {product.category && (
