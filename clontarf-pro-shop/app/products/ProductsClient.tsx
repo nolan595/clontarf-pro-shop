@@ -5,13 +5,14 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ShoppingBag, Filter } from "lucide-react";
 import Select from "@/components/ui/Select";
+import { CldImage } from "next-cloudinary";
 
 type Product = {
   id: string;
   name: string;
   description: string | null;
   price: number;
-  image_url: string | null;
+  cloudinary_public_id: string | null;
   category:
     | "clubs"
     | "balls"
@@ -122,15 +123,15 @@ export default function ProductsClient({ products }: { products: Product[] }) {
                   "
                 >
                   <div className="relative h-64 overflow-hidden bg-[var(--surface-2)]">
-                    {product.image_url ? (
-    <Image
-      src={product.image_url}
-      alt={product.name}
-      fill
-      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      className="object-cover"
-      // optional: keep lazy as default (Next does this automatically for non-priority images)
-    />
+                    {product.cloudinary_public_id ? (
+
+                    <CldImage
+                      width="960"
+                      height="600"
+                      src={product.cloudinary_public_id}
+                      sizes="100vw"
+                      alt="Golf Apparel"
+                    />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-black to-[var(--surface-2)] flex items-center justify-center">
                         <ShoppingBag className="w-16 h-16 text-[var(--accent-green)]/40" />

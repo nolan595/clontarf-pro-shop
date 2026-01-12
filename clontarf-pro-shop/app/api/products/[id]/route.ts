@@ -22,7 +22,7 @@ export async function PATCH(
       ...(typeof body.name === "string" ? { name: body.name } : {}),
       ...(body.description !== undefined ? { description: body.description } : {}),
       ...(typeof body.price === "number" ? { price: body.price } : {}),
-      ...(body.image_url !== undefined ? { image_url: body.image_url } : {}),
+      ...(body.cloudinary_public_id !== undefined ? { cloudinary_public_id: body.cloudinary_public_id } : {}),
       ...(body.category !== undefined ? { category: body.category } : {}),
       ...(body.brand !== undefined ? { brand: body.brand } : {}),
       ...(typeof body.is_featured === "boolean" ? { is_featured: body.is_featured } : {}),

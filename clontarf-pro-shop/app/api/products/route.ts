@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     name: string;
     description: string | null;
     price: number;
-    image_url: string | null;
+    cloudinary_public_id: string;
     category: "clubs" | "balls" | "apparel" | "accessories" | "shoes" | "bags" | null;
     brand: string | null;
     is_featured: boolean;
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         name: body.name,
         description: body.description ?? null,
         price: body.price,
-        image_url: body.image_url ?? null,
+        cloudinary_public_id: body.cloudinary_public_id,
         category: body.category ?? null,
         brand: body.brand ?? null,
         is_featured: Boolean(body.is_featured),

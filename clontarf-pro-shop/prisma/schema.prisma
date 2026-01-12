@@ -16,15 +16,15 @@ enum ProductCategory {
 }
 
 model Product {
-  id          String           @id @default(cuid())
-  name        String
-  description String?
-  price       Float
-  image_url   String?
-  category    ProductCategory?
-  brand       String?
-  is_featured Boolean          @default(false)
-  in_stock    Boolean          @default(true)
+  id                   String           @id @default(cuid())
+  name                 String
+  description          String?
+  price                Float
+  cloudinary_public_id String?
+  category             ProductCategory?
+  brand                String?
+  is_featured          Boolean          @default(false)
+  in_stock             Boolean          @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
