@@ -220,12 +220,6 @@ export function buildVoucherPdf(p: VoucherPdfInput) {
   doc.setTextColor(...white);
   doc.text(codeDisplay, PAGE_W / 2, 284, { align: "center" });
 
-  doc.setFontSize(9);
-  doc.setTextColor(...textGray);
-  doc.text("Never expires • Non-refundable", PAGE_W / 2, 291, {
-    align: "center",
-  });
-
   return doc;
 }
 
