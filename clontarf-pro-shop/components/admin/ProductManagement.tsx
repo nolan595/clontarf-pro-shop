@@ -4,6 +4,8 @@ import React, { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Pencil, Plus, ShoppingBag, Star, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
+import { CldUploadWidget, CloudinaryUploadWidgetResults, CldImage } from 'next-cloudinary';
+
 
 type ProductCategory = "clubs" | "balls" | "apparel" | "accessories" | "shoes" | "bags";
 
@@ -12,7 +14,7 @@ export type Product = {
   name: string;
   description: string | null;
   price: number;
-  image_url: string | null;
+  cloudinary_public_id: string | null;
   category: ProductCategory | null;
   brand: string | null;
   is_featured: boolean;
@@ -29,7 +31,7 @@ type ProductDraft = {
   name: string;
   description: string;
   price: string;
-  image_url: string;
+  cloudinary_public_id: string;
   category: ProductCategory;
   brand: string;
   is_featured: boolean;
@@ -40,7 +42,7 @@ const EMPTY_DRAFT: ProductDraft = {
   name: "",
   description: "",
   price: "",
-  image_url: "",
+  cloudinary_public_id: "",
   category: "clubs",
   brand: "",
   is_featured: false,
@@ -73,7 +75,7 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
       name: p.name ?? "",
       description: p.description ?? "",
       price: String(p.price ?? ""),
-      image_url: p.image_url ?? "",
+      cloudinary_public_id: p.cloudinary_public_id ?? "",
       category: (p.category ?? "clubs") as ProductCategory,
       brand: p.brand ?? "",
       is_featured: !!p.is_featured,
@@ -126,7 +128,7 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
         name: draft.name.trim(),
         description: draft.description.trim() ? draft.description.trim() : null,
         price,
-        image_url: draft.image_url.trim() ? draft.image_url.trim() : null,
+        cloudinary_public_id: draft.cloudinary_public_id.trim() ? draft.cloudinary_public_id.trim() : null,
         category: draft.category,
         brand: draft.brand.trim() ? draft.brand.trim() : null,
         is_featured: draft.is_featured,
@@ -256,8 +258,19 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
                   className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 bg-white"
                 >
                   <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0 relative">
-                    {p.image_url ? (
-                      <img src={p.image_url} alt={p.name} className="w-full h-full object-cover" />
+                    {p.cloudinary_public_id ? (
+                      <CldImage
+                        src={p.cloudinary_public_id}
+                        alt={p.name}
+                        width={64}
+                        height={64}
+                        className="w-full h-full object-cover"
+                        sizes="64px"
+                        crop="fill"
+                        gravity="auto"
+                        format="auto"
+                        quality="auto"
+                      />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <ShoppingBag className="w-6 h-6 text-gray-400" />
@@ -337,12 +350,15 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
       {/* Modal (no extra UI lib) */}
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center p-4">
-          <div className="w-full max-w-2xl bg-white rounded-2xl border border-black/10 shadow-2xl">
-            <div className="p-5 border-b flex items-center justify-between">
-              <h3 className="font-semibold text-lg">
+          <div className="w-full max-w-2xl bg-white rounded-2xl border border-black/20 shadow-2xl">
+            <div className="p-5 border-b border-black/10 flex items-center justify-between">
+              <h3 className="font-semibold text-lg text-gray-900">
                 {editing ? "Edit Product" : "Add Product"}
               </h3>
-              <button onClick={closeModal} className="p-2 rounded-lg hover:bg-gray-100">
+              <button
+                onClick={closeModal}
+                className="p-2 rounded-lg hover:bg-gray-100 text-gray-700"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -350,56 +366,56 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium">Product Name *</label>
+                  <label className="text-sm font-medium text-gray-800">Product Name *</label>
                   <input
                     value={draft.name}
                     onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                     required
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium">Price (€) *</label>
+                  <label className="text-sm font-medium text-gray-800">Price (€) *</label>
                   <input
                     type="number"
                     step="0.01"
                     value={draft.price}
                     onChange={(e) => setDraft((d) => ({ ...d, price: e.target.value }))}
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-sm font-medium">Description</label>
+                <label className="text-sm font-medium text-gray-800">Description</label>
                 <textarea
                   value={draft.description}
                   onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
-                  className="w-full border rounded-lg px-3 py-2"
+                  className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                   rows={3}
                 />
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="text-sm font-medium">Brand</label>
+                  <label className="text-sm font-medium text-gray-800">Brand</label>
                   <input
                     value={draft.brand}
                     onChange={(e) => setDraft((d) => ({ ...d, brand: e.target.value }))}
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-sm font-medium">Category</label>
+                  <label className="text-sm font-medium text-gray-800">Category</label>
                   <select
                     value={draft.category}
                     onChange={(e) =>
                       setDraft((d) => ({ ...d, category: e.target.value as ProductCategory }))
                     }
-                    className="w-full border rounded-lg px-3 py-2"
+                    className="w-full border border-gray-300 text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
                   >
                     <option value="clubs">Clubs</option>
                     <option value="balls">Balls</option>
@@ -411,21 +427,86 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-sm font-medium">Image URL</label>
-                <input
-                  value={draft.image_url}
-                  onChange={(e) => setDraft((d) => ({ ...d, image_url: e.target.value }))}
-                  className="w-full border rounded-lg px-3 py-2"
-                  placeholder="https://..."
-                />
-              </div>
+<div className="space-y-2">
+  <div className="flex items-center justify-between">
+    <label className="text-sm font-medium text-gray-800">Product Image</label>
+
+    {/* Status pill */}
+    {draft.cloudinary_public_id ? (
+      <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 border border-emerald-200">
+        <span className="h-2 w-2 rounded-full bg-emerald-500" />
+        Image attached
+      </span>
+    ) : (
+      <span className="inline-flex items-center gap-2 rounded-full bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-600 border border-gray-200">
+        <span className="h-2 w-2 rounded-full bg-gray-300" />
+        No image
+      </span>
+    )}
+  </div>
+
+  <div className="flex items-center gap-3">
+    <CldUploadWidget
+      signatureEndpoint="/api/sign-image"
+      options={{ maxFiles: 1, multiple: false }}
+      onSuccess={(result: CloudinaryUploadWidgetResults) => {
+        if (result.event !== "success") return;
+
+        const info = result.info;
+        if (!info || typeof info === "string") {
+          toast.error("Upload failed");
+          return;
+        }
+
+        const publicId = info.public_id;
+        if (!publicId) {
+          toast.error("Upload failed");
+          return;
+        }
+
+        setDraft((d) => ({ ...d, cloudinary_public_id: publicId }));
+        toast.success("Image uploaded");
+      }}
+    >
+      {({ open }) => (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            open();
+          }}
+          className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/30"
+        >
+          {draft.cloudinary_public_id ? "Replace image" : "Upload image"}
+        </button>
+      )}
+    </CldUploadWidget>
+
+    <button
+      type="button"
+      disabled={!draft.cloudinary_public_id}
+      onClick={() => setDraft((d) => ({ ...d, cloudinary_public_id: "" }))}
+      className="inline-flex items-center gap-2 rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+    >
+      Remove
+    </button>
+
+    {/* Optional: show a shortened id so user knows something is there */}
+    {draft.cloudinary_public_id ? (
+      <span className="ml-auto hidden md:inline text-xs text-gray-500 truncate max-w-[260px]">
+        {draft.cloudinary_public_id}
+      </span>
+    ) : null}
+  </div>
+</div>
+
 
               <div className="grid md:grid-cols-2 gap-4">
-                <label className="flex items-center justify-between border rounded-xl p-4">
+                <label className="flex items-center justify-between border border-gray-300 rounded-xl p-4">
                   <div>
-                    <p className="text-sm font-medium">Featured Product</p>
-                    <p className="text-xs text-gray-500">Show on homepage</p>
+                    <p className="text-sm font-medium text-gray-800">Featured Product</p>
+                    <p className="text-xs text-gray-600">Show on homepage</p>
                   </div>
                   <input
                     type="checkbox"
@@ -435,10 +516,10 @@ export default function ProductManagement({ initialProducts, onChanged }: Props)
                   />
                 </label>
 
-                <label className="flex items-center justify-between border rounded-xl p-4">
+                <label className="flex items-center justify-between border border-gray-300 rounded-xl p-4">
                   <div>
-                    <p className="text-sm font-medium">In Stock</p>
-                    <p className="text-xs text-gray-500">Available for sale</p>
+                    <p className="text-sm font-medium text-gray-800">In Stock</p>
+                    <p className="text-xs text-gray-600">Available for sale</p>
                   </div>
                   <input
                     type="checkbox"

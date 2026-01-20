@@ -5,13 +5,14 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ShoppingBag, Filter } from "lucide-react";
 import Select from "@/components/ui/Select";
+import { CldImage } from "next-cloudinary";
 
 type Product = {
   id: string;
   name: string;
   description: string | null;
   price: number;
-  image_url: string | null;
+  cloudinary_public_id: string | null;
   category:
     | "clubs"
     | "balls"
@@ -121,15 +122,16 @@ export default function ProductsClient({ products }: { products: Product[] }) {
                     transition-shadow duration-500
                   "
                 >
-                  {/* Image */}
                   <div className="relative h-64 overflow-hidden bg-[var(--surface-2)]">
-                    {product.image_url ? (
-                      <img
-                        src={product.image_url}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                        loading="lazy"
-                      />
+                    {product.cloudinary_public_id ? (
+
+                    <CldImage
+                      width="960"
+                      height="600"
+                      src={product.cloudinary_public_id}
+                      sizes="100vw"
+                      alt="Golf Apparel"
+                    />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-black to-[var(--surface-2)] flex items-center justify-center">
                         <ShoppingBag className="w-16 h-16 text-[var(--accent-green)]/40" />
@@ -171,7 +173,7 @@ export default function ProductsClient({ products }: { products: Product[] }) {
 
                     <div className="flex items-center justify-between">
                       <p className="text-2xl font-bold text-[var(--accent-green)]">
-                        €{product.price.toFixed(2)}
+                        €{product.price}
                       </p>
 
                       {product.category && (

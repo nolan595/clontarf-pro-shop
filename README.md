@@ -2,8 +2,8 @@
 
 to do 
 
-update eoins text
+update eoins text x
 add product purchase section on home page 
-optimise product retrieving
+optimise product retrieving x
 add password to env variables
-make endpoints guarded
+make endpoints guarded x 

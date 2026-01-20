@@ -3,7 +3,7 @@ import ProductsClient from "./ProductsClient";
 import { unstable_cache } from "next/cache";
 
 export const runtime = "nodejs";
-export const revalidate = 60; // cache the page/data for 60s
+export const revalidate = 60;
 
 const getProducts = unstable_cache(
   async () => {
@@ -14,7 +14,7 @@ const getProducts = unstable_cache(
         name: true,
         description: true,
         price: true,
-        image_url: true,
+        cloudinary_public_id: true,
         category: true,
         brand: true,
         is_featured: true,
@@ -31,7 +31,7 @@ export default async function ProductsPage() {
 
   const safeProducts = products.map((p) => ({
     ...p,
-    price: p.price.toNumber(),
+    price: p.price
   }));
 
   return <ProductsClient products={safeProducts} />;

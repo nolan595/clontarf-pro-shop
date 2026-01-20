@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Download, Gift, User } from "lucide-react";
 import jsPDF from "jspdf";
 import { toast } from "sonner";
+import { buildVoucherPdf } from "@/lib/voucherPdf";
 
 type VoucherPurchase = {
   id: string;
@@ -28,92 +29,21 @@ function getErrorMessage(err: unknown) {
 }
 
 export default function VoucherManagement({ purchases }: { purchases: VoucherPurchase[] }) {
-  const downloadVoucher = (purchase: VoucherPurchase) => {
-    try {
-      const doc = new jsPDF();
+const downloadVoucher = (purchase: VoucherPurchase) => {
+  try {
+    const doc = buildVoucherPdf({
+      id: purchase.id,
+      amount: purchase.amount,
+      recipient_name: purchase.recipient_name,
+      message: purchase.message,
+    });
 
-      // Dark background
-      doc.setFillColor(0, 0, 0);
-      doc.rect(0, 0, 210, 297, "F");
-
-      // Header with emerald accent
-      doc.setFillColor(16, 185, 129);
-      doc.rect(0, 0, 210, 50, "F");
-
-      // Business name
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(32);
-      doc.text("Eoin O'Brien Golf", 105, 30, { align: "center" });
-
-      // Amount box
-      doc.setFillColor(39, 39, 42);
-      doc.roundedRect(50, 80, 110, 50, 8, 8, "F");
-
-      doc.setTextColor(255, 255, 255);
-      doc.setFontSize(16);
-      doc.text("GIFT VOUCHER", 105, 100, { align: "center" });
-
-      doc.setTextColor(16, 185, 129);
-      doc.setFontSize(42);
-      doc.text(`€${purchase.amount}`, 105, 120, { align: "center" });
-
-      // Details section
-      let yPos = 160;
-
-      if (purchase.recipient_name) {
-        doc.setFontSize(11);
-        doc.setTextColor(161, 161, 170);
-        doc.text("TO:", 50, yPos);
-
-        doc.setFontSize(16);
-        doc.setTextColor(255, 255, 255);
-        doc.text(purchase.recipient_name, 50, yPos + 10);
-
-        yPos += 30;
-      }
-
-      if (purchase.message) {
-        doc.setFontSize(11);
-        doc.setTextColor(161, 161, 170);
-        doc.text("MESSAGE:", 50, yPos);
-
-        doc.setFontSize(12);
-        doc.setTextColor(228, 228, 231);
-        const split = doc.splitTextToSize(purchase.message, 110);
-        doc.text(split, 50, yPos + 10);
-
-        yPos += 15 + split.length * 6;
-      }
-
-      // Valid for section
-      doc.setFillColor(39, 39, 42);
-      doc.roundedRect(50, 220, 110, 30, 5, 5, "F");
-
-      doc.setFontSize(10);
-      doc.setTextColor(161, 161, 170);
-      doc.text("VALID FOR", 105, 232, { align: "center" });
-
-      doc.setFontSize(11);
-      doc.setTextColor(255, 255, 255);
-      doc.text("Lessons • Equipment • Pro Shop", 105, 242, { align: "center" });
-
-      // Footer
-      doc.setFontSize(9);
-      doc.setTextColor(113, 113, 122);
-      doc.text("Redeemable for any golf lessons, equipment, or pro shop merchandise", 105, 265, {
-        align: "center",
-      });
-      doc.text(`Voucher Code: ${purchase.id.substring(0, 8).toUpperCase()}`, 105, 272, {
-        align: "center",
-      });
-      doc.text("Never expires • Non-refundable", 105, 279, { align: "center" });
-
-      doc.save(`voucher-${purchase.id}.pdf`);
-      toast.success("Voucher downloaded");
-    } catch (err: unknown) {
-      toast.error(getErrorMessage(err));
-    }
-  };
+    doc.save(`voucher-${purchase.id}.pdf`);
+    toast.success("Voucher downloaded");
+  } catch (err: unknown) {
+    toast.error(getErrorMessage(err));
+  }
+};
 
   return (
     <div className="bg-white rounded-2xl border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.25)]">

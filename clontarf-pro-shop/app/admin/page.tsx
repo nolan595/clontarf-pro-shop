@@ -13,7 +13,7 @@ export default async function AdminPage() {
         name: true,
         description: true,
         price: true,
-        image_url: true,
+        cloudinary_public_id: true,
         category: true,
         brand: true,
         is_featured: true,
@@ -37,7 +37,7 @@ export default async function AdminPage() {
 
   const safeProducts = products.map((p) => ({
     ...p,
-    price: p.price.toNumber(),
+    price: p.price
   }));
 
   // amount might be Int or Decimal depending on your schema
