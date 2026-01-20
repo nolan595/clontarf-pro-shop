@@ -36,6 +36,7 @@ const downloadVoucher = (purchase: VoucherPurchase) => {
       amount: purchase.amount,
       recipient_name: purchase.recipient_name,
       message: purchase.message,
+      buyer_name: purchase.buyer_name
     });
 
     doc.save(`voucher-${purchase.id}.pdf`);
@@ -82,10 +83,10 @@ const downloadVoucher = (purchase: VoucherPurchase) => {
 
                   <button
                     onClick={() => downloadVoucher(purchase)}
-                    className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-gray-200 hover:bg-gray-50"
+                    className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-gray-900 bg-gray-900 text-white hover:bg-gray-800"
                     title="Download voucher PDF"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="w-4 h-4 text-white" />
                   </button>
                 </div>
 
