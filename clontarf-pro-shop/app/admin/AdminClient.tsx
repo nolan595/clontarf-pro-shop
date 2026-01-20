@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Gift, Euro, Lock, ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import ProductManagement, { type Product } from "@/components/admin/ProductManagement";
 import VoucherManagement from "@/components/admin/VoucherManagement";
-
-const ADMIN_PASSWORD = "proshop2026";
 
 type VoucherPurchase = {
   id: string;
@@ -26,15 +24,12 @@ type Props = {
   purchases: VoucherPurchase[];
 };
 
-function getInitialAuth() {
-  if (typeof window === "undefined") return false;
-  return sessionStorage.getItem("admin_auth") === "true";
-}
-
 export default function AdminClient({ products, purchases }: Props) {
   const router = useRouter();
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => getInitialAuth());
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -44,25 +39,63 @@ export default function AdminClient({ products, purchases }: Props) {
   );
   const totalPurchases = purchases.length;
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  // On first load, check the httpOnly cookie via /api/admin/me
+  useEffect(() => {
+    let cancelled = false;
 
-    if (password === ADMIN_PASSWORD) {
-      sessionStorage.setItem("admin_auth", "true");
-      setIsAuthenticated(true);
-      setError("");
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/me", { cache: "no-store" });
+        const data = await res.json();
+        if (!cancelled) setIsAuthenticated(Boolean(data?.ok));
+      } catch {
+        if (!cancelled) setIsAuthenticated(false);
+      } finally {
+        if (!cancelled) setCheckingAuth(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    const res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    if (!res.ok) {
+      setError("Incorrect password");
       return;
     }
 
-    setError("Incorrect password");
+    setIsAuthenticated(true);
+    setPassword("");
+    router.refresh();
   };
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("admin_auth");
+  const handleLogout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
     setIsAuthenticated(false);
     setPassword("");
     setError("");
+    router.refresh();
   };
+
+  // Optional: a tiny loading state so you don’t flash the login screen
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center px-6">
+        <div className="text-white/70 text-sm">Checking access…</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return (
@@ -94,6 +127,7 @@ export default function AdminClient({ products, purchases }: Props) {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter admin password"
                     className="w-full rounded-lg bg-zinc-950 border border-zinc-700 text-white px-3 py-2 outline-none focus:border-emerald-600"
+                    autoComplete="current-password"
                   />
                   {error && <p className="text-sm text-red-500">{error}</p>}
                 </div>
@@ -210,16 +244,7 @@ function AdminTabs({
   onProductsChanged,
 }: {
   products: Product[];
-  purchases: {
-    id: string;
-    amount: number;
-    buyer_name: string;
-    buyer_email: string;
-    recipient_name: string | null;
-    recipient_email: string | null;
-    message: string | null;
-    createdAt: string;
-  }[];
+  purchases: VoucherPurchase[];
   onProductsChanged: () => void;
 }) {
   const [tab, setTab] = useState<"products" | "vouchers">("products");
