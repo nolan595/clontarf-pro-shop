@@ -16,7 +16,7 @@ type VoucherPurchase = {
   recipient_name: string | null;
   recipient_email: string | null;
   message: string | null;
-  createdAt: string; // ISO string from server
+  createdAt: string;
 };
 
 type Props = {
