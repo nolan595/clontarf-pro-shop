@@ -34,7 +34,7 @@ function groupCode(value: string) {
 export function buildVoucherPdf(p: VoucherPdfInput) {
   const doc = new jsPDF(); // A4 portrait (mm)
 
-  const emerald = [16, 185, 129] as const;
+  const emerald = [27, 74, 44] as const;
   const bg = [0, 0, 0] as const;
   const panel = [24, 24, 27] as const;
   const panel2 = [39, 39, 42] as const;
