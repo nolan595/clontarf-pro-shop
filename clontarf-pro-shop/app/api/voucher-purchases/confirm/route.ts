@@ -121,9 +121,9 @@ export async function POST(req: Request) {
   const recipientIsDifferent =
     !!recipientEmail && !!buyerEmail && !sameEmail(recipientEmail, buyerEmail);
 
-  // Option B: voucher PDF to both if gifting; otherwise just to whichever exists
+  // Send voucher PDF only to recipient if gifting; otherwise to whichever exists
   const voucherRecipients = recipientIsDifferent
-    ? uniq([buyerEmail, recipientEmail])
+    ? uniq([recipientEmail])
     : uniq([buyerEmail, recipientEmail]);
 
   const voucherCode = paidPurchase.id.substring(0, 8).toUpperCase();
