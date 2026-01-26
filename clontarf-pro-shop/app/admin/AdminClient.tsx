@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import ProductManagement, { type Product } from "@/components/admin/ProductManagement";
 import VoucherManagement from "@/components/admin/VoucherManagement";
 
+import ServiceManagement, {type Service} from '@/components/admin/ServiceManagement'
+
 type VoucherPurchase = {
   id: string;
   amount: number;
@@ -22,9 +24,10 @@ type VoucherPurchase = {
 type Props = {
   products: Product[];
   purchases: VoucherPurchase[];
+  services: Service[]
 };
 
-export default function AdminClient({ products, purchases }: Props) {
+export default function AdminClient({ products, purchases, services }: Props) {
   const router = useRouter();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -229,7 +232,9 @@ export default function AdminClient({ products, purchases }: Props) {
             <AdminTabs
               products={products}
               purchases={purchases}
+              services={services}
               onProductsChanged={() => router.refresh()}
+              onServicesChanged={() => router.refresh()}
             />
           </motion.div>
         </div>
@@ -241,13 +246,17 @@ export default function AdminClient({ products, purchases }: Props) {
 function AdminTabs({
   products,
   purchases,
+  services,
   onProductsChanged,
+  onServicesChanged
 }: {
   products: Product[];
   purchases: VoucherPurchase[];
+  services: Service[]
   onProductsChanged: () => void;
+  onServicesChanged: () => void;
 }) {
-  const [tab, setTab] = useState<"products" | "vouchers">("products");
+  const [tab, setTab] = useState<"products" | "vouchers" | "services">("products");
 
   return (
     <div className="space-y-4">
@@ -259,6 +268,15 @@ function AdminTabs({
         >
           <ShoppingBag className="w-4 h-4" />
           Products
+        </button>
+
+          <button
+            onClick={() => setTab("services")}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition
+              ${tab === "services" ? "bg-[#1B4C2C] text-white" : "text-white/70 hover:text-white"}`}
+          >
+          <ShoppingBag className="w-4 h-4" />
+          Services
         </button>
 
         <button
@@ -273,8 +291,10 @@ function AdminTabs({
 
       {tab === "products" ? (
         <ProductManagement initialProducts={products} onChanged={onProductsChanged} />
-      ) : (
+      ) : tab === "vouchers" ? (
         <VoucherManagement purchases={purchases} />
+      ) : (
+        <ServiceManagement initialServices={services} onChanged={onServicesChanged} />
       )}
     </div>
   );

@@ -5,7 +5,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const [products, purchases] = await Promise.all([
+  const [products, purchases, services] = await Promise.all([
     prisma.product.findMany({
       orderBy: [{ is_featured: "desc" }, { createdAt: "desc" }],
       select: {
@@ -33,12 +33,27 @@ export default async function AdminPage() {
         createdAt: true,
       },
     }),
+    prisma.service.findMany({
+      orderBy: {createdAt: "desc"},
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        cloudinary_public_id: true,
+      },
+    })
   ]);
 
   const safeProducts = products.map((p) => ({
     ...p,
     price: p.price
   }));
+
+  const safeServices = services.map((p) => ({
+    ...p,
+    price: p.price
+  }))
 
   // amount might be Int or Decimal depending on your schema
   const safePurchases = purchases.map((p) => ({
@@ -47,5 +62,5 @@ export default async function AdminPage() {
     createdAt: p.createdAt.toISOString(),
   }));
 
-  return <AdminClient products={safeProducts} purchases={safePurchases} />;
+  return <AdminClient products={safeProducts} purchases={safePurchases} services={safeServices} />;
 }

@@ -27,14 +27,19 @@ export function SiteHeader() {
         match: (p) => p === routes.home,
       },
       {
-  name: "Products",
-  href: routes.products,
-  match: (p) => p.startsWith(routes.products),
-},
+        name: "Products",
+        href: routes.products,
+        match: (p) => p.startsWith(routes.products),
+      },
       {
         name: "Vouchers",
         href: routes.vouchers,
         match: (p) => p.startsWith(routes.vouchers),
+      },
+      {
+        name: "Services",
+        href: routes.services,
+        match: (p) => p.startsWith(routes.services),
       },
       {
         name: "Book a Lesson",
