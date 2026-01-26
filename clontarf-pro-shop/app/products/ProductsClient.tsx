@@ -172,9 +172,11 @@ export default function ProductsClient({ products }: { products: Product[] }) {
                     )}
 
                     <div className="flex items-center justify-between">
-                      <p className="text-2xl font-bold text-[var(--accent-green)]">
-                        €{product.price}
-                      </p>
+                      {product.price > 0 && (
+                        <p className="text-2xl font-bold text-[var(--accent-green)]">
+                          €{product.price}
+                        </p>
+                      )}
 
                       {product.category && (
                         <span className="px-3 py-1 bg-[var(--surface-2)] text-[var(--text-secondary)] text-xs font-medium rounded-full capitalize">
