@@ -71,13 +71,21 @@ export function Hero() {
               <Link href={routes.vouchers}>Buy a voucher</Link>
             </Button>
 
-                        <Button
+            <Button
               asChild
               size="lg"
               variant="outline"
               className="rounded-full px-8 h-14 w-full sm:w-auto border-white/20 text-white hover:bg-white/10"
             >
               <Link href={routes.products}>Products</Link>
+            </Button>
+                        <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-full px-8 h-14 w-full sm:w-auto border-white/20 text-white hover:bg-white/10"
+            >
+              <Link href={routes.services}>Services</Link>
             </Button>
           </div>
         </motion.div>
